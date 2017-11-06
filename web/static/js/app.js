@@ -19,3 +19,15 @@ import "phoenix_html"
 // paths "./socket" or full ones "web/static/js/socket".
 
 // import socket from "./socket"
+import MainApp from "../templates/main-app";
+import Vue from 'vue'
+
+Vue.component('main-app', MainApp)
+
+window.vueApp = new Vue({
+  el: '#app',
+  ready() {
+    self.ordersChannel = null
+    self.profileChannel = null
+  },
+});
