@@ -18,16 +18,37 @@ import "phoenix_html"
 // Local files can be imported directly using relative
 // paths "./socket" or full ones "web/static/js/socket".
 
-// import socket from "./socket"
+import { socket, joinChannels } from "./socket"
 import MainApp from "../templates/main-app";
 import Vue from 'vue'
 
 Vue.component('main-app', MainApp)
 
-window.vueApp = new Vue({
-  el: '#app',
-  ready() {
-    self.ordersChannel = null
-    self.profileChannel = null
-  },
+let channelsObjects = {}
+let channelsInfo = {}
+channelsInfo["profile"] = false
+channelsInfo["orders"] = false
+
+
+joinChannels((channel_type, channel, params) => {
+  channelsInfo[channel_type] = true
+  channelsObjects[channel_type] = channel
+  var fullyJoined = true
+  for (var data in channelsInfo) {
+    fullyJoined = fullyJoined & channelsInfo[data]
+  }
+  if (fullyJoined) {
+    initVueApp(channelsObjects["orders"], channelsObjects["profile"])
+  }
 });
+
+
+let initVueApp = (orders, profile) => {
+  window.vueApp = new Vue({
+    el: '#app',
+    ready() {
+      self.ordersChannel = orders
+      self.profileChannel = profile
+    },
+  });
+}

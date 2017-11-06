@@ -3,6 +3,8 @@ defmodule PhoenixChannelsBase.UserSocket do
 
   ## Channels
   # channel "room:*", PhoenixChannelsBase.RoomChannel
+  channel "orders:*", PhoenixChannelsBase.OrdersChannel
+  channel "profile:*", PhoenixChannelsBase.ProfilesChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
